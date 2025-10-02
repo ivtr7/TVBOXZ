@@ -1,0 +1,144 @@
+================================================================================
+RELATÓRIO DE ANÁLISE DE CÓDIGO - TVBOX3
+================================================================================
+Data/Hora: 20/09/2025 01:15:25
+Projeto: C:\xampp\htdocs\TVBOX3
+
+ESTATÍSTICAS DO PROJETO
+----------------------------------------
+Total Files: 73
+Js Files: 39
+Ts Files: 11
+Tsx Files: 23
+Py Files: 6
+Json Files: 0
+Css Files: 0
+Other Files: 0
+Total Lines: 14163
+Functions Found: 273
+Classes Found: 6
+Imports Found: 256
+
+ERROS ENCONTRADOS
+----------------------------------------
+Nenhum erro encontrado!
+
+AVISOS E MELHORIAS
+----------------------------------------
+1. C:\xampp\htdocs\TVBOX3\remove_login_script.js: console.log encontrado (remover em produção)
+2. C:\xampp\htdocs\TVBOX3\test-content-only.js: console.log encontrado (remover em produção)
+3. C:\xampp\htdocs\TVBOX3\test-frontend-api.js: console.log encontrado (remover em produção)
+4. C:\xampp\htdocs\TVBOX3\test-system-comprehensive.js: console.log encontrado (remover em produção)
+5. C:\xampp\htdocs\TVBOX3\backend\check-db-structure.js: console.log encontrado (remover em produção)
+6. C:\xampp\htdocs\TVBOX3\backend\create-announcements-table.js: console.log encontrado (remover em produção)
+7. C:\xampp\htdocs\TVBOX3\backend\create-device-files-table.js: console.log encontrado (remover em produção)
+8. C:\xampp\htdocs\TVBOX3\backend\insert-sample-files.js: console.log encontrado (remover em produção)
+9. C:\xampp\htdocs\TVBOX3\backend\server.js: console.log encontrado (remover em produção)
+10. C:\xampp\htdocs\TVBOX3\backend\update-file-paths.js: console.log encontrado (remover em produção)
+11. C:\xampp\htdocs\TVBOX3\backend\config\database.js: console.log encontrado (remover em produção)
+12. C:\xampp\htdocs\TVBOX3\backend\middleware\bruteForceProtection.js: console.log encontrado (remover em produção)
+13. C:\xampp\htdocs\TVBOX3\backend\middleware\httpsEnforcement.js: console.log encontrado (remover em produção)
+14. C:\xampp\htdocs\TVBOX3\backend\middleware\refreshToken.js: console.log encontrado (remover em produção)
+15. C:\xampp\htdocs\TVBOX3\backend\routes\deviceFiles.js: console.log encontrado (remover em produção)
+16. C:\xampp\htdocs\TVBOX3\backend\routes\devices.js: console.log encontrado (remover em produção)
+17. C:\xampp\htdocs\TVBOX3\backend\routes\system.js: console.log encontrado (remover em produção)
+18. C:\xampp\htdocs\TVBOX3\backend\scripts\check-tables.js: console.log encontrado (remover em produção)
+19. C:\xampp\htdocs\TVBOX3\backend\scripts\create-admin-user.js: console.log encontrado (remover em produção)
+20. C:\xampp\htdocs\TVBOX3\backend\scripts\create-admin.js: console.log encontrado (remover em produção)
+21. C:\xampp\htdocs\TVBOX3\backend\scripts\update-admin-passwords.js: console.log encontrado (remover em produção)
+22. C:\xampp\htdocs\TVBOX3\backend\scripts\update-tables.js: console.log encontrado (remover em produção)
+23. C:\xampp\htdocs\TVBOX3\backend\websocket\index.js: console.log encontrado (remover em produção)
+24. C:\xampp\htdocs\TVBOX3\backend\src\utils\videoProcessor.js: console.log encontrado (remover em produção)
+25. C:\xampp\htdocs\TVBOX3\src\hooks\useAdminWebSocket.ts: console.log encontrado (remover em produção)
+26. C:\xampp\htdocs\TVBOX3\src\utils\videoCache.ts: console.log encontrado (remover em produção)
+27. C:\xampp\htdocs\TVBOX3\src\utils\videoCompatibility.ts: console.log encontrado (remover em produção)
+28. C:\xampp\htdocs\TVBOX3\src\utils\websocket.ts: console.log encontrado (remover em produção)
+29. C:\xampp\htdocs\TVBOX3\src\components\MediaPlayer.tsx: console.log encontrado (remover em produção)
+30. C:\xampp\htdocs\TVBOX3\src\pages\tvbox\TVBoxDisplay.tsx: console.log encontrado (remover em produção)
+31. Frontend - Script obrigatório não encontrado: start
+32. Backend - Script obrigatório não encontrado: build
+
+INFORMAÇÕES GERAIS
+----------------------------------------
+• Diretório encontrado: src
+• Diretório encontrado: backend
+• Diretório encontrado: backend/routes
+• Diretório encontrado: backend/config
+• Diretório encontrado: backend/middleware
+• Diretório encontrado: src/components
+• Diretório encontrado: src/services
+• Arquivo de configuração encontrado: package.json
+• Arquivo de configuração encontrado: vite.config.ts
+• Arquivo de configuração encontrado: tsconfig.json
+• Arquivo de configuração encontrado: backend/package.json
+• Arquivo de configuração encontrado: .env
+• Arquivo de configuração encontrado: backend/.env
+• Sintaxe Python válida: C:\xampp\htdocs\TVBOX3\code_analyzer.py
+• Sintaxe Python válida: C:\xampp\htdocs\TVBOX3\script.py
+• Sintaxe Python válida: C:\xampp\htdocs\TVBOX3\start_tvbox.py
+• Sintaxe Python válida: C:\xampp\htdocs\TVBOX3\system_auditor.py
+• Sintaxe Python válida: C:\xampp\htdocs\TVBOX3\node_modules\flatted\python\flatted.py
+• Sintaxe Python válida: C:\xampp\htdocs\TVBOX3\node_modules\flatted\python\test.py
+• Frontend - Dependências: 19
+• Frontend - Dev Dependencies: 19
+• Backend - Dependências: 15
+• Backend - Dev Dependencies: 1
+• Rotas encontradas em announcements.js: 6
+•   GET /:deviceId
+•   POST /:deviceId
+•   PUT /:deviceId/:announcementId
+•   DELETE /:deviceId/:announcementId
+•   PUT /:deviceId/reorder
+•   GET /:deviceId/active
+• Rotas encontradas em auth.js: 4
+•   POST /login
+•   POST /refresh
+•   POST /logout
+•   GET /verify
+• Rotas encontradas em deviceFiles.js: 9
+•   GET /:deviceId
+•   GET /:deviceId/files
+•   POST /:deviceId/upload
+•   GET /:deviceId/files/:fileId/download
+•   DELETE /:deviceId/:filename
+•   DELETE /:deviceId/files/:fileId
+•   PUT /:deviceId/files/reorder
+•   GET /:deviceId/download/:filename
+•   POST /:deviceId/force-update
+• Rotas encontradas em devices.js: 14
+•   POST /register
+•   POST /legacy-register
+•   POST /device/register
+•   GET /:deviceId/status
+•   GET /:deviceId/playlist
+•   GET /:deviceId/info
+•   GET /
+•   PUT /:deviceId/status
+•   GET /:deviceId
+•   GET /:deviceId/playlist/admin
+•   POST /:deviceId/events
+•   PUT /:deviceId
+•   DELETE /:deviceId
+•   POST /:deviceId/power
+• Rotas encontradas em player.js: 1
+•   GET /:deviceId/manifest
+• Rotas encontradas em playlists.js: 4
+•   POST /device/:deviceId/reorder
+•   GET /device/:deviceId
+•   POST /device/:deviceId/content
+•   DELETE /device/:deviceId/content/:playlistId
+• Rotas encontradas em system.js: 6
+•   GET /status
+•   GET /logs
+•   GET /audit
+•   GET /settings
+•   PUT /settings
+•   POST /maintenance
+• Arquivos SQL encontrados: 7
+•   C:\xampp\htdocs\TVBOX3\backend\create_announcements_table.sql
+•   C:\xampp\htdocs\TVBOX3\backend\create_device_files_table.sql
+•   C:\xampp\htdocs\TVBOX3\supabase\migrations\20250916144434_steep_band.sql
+•   C:\xampp\htdocs\TVBOX3\supabase\migrations\20250916144439_fragrant_delta.sql
+•   C:\xampp\htdocs\TVBOX3\supabase\migrations\20250916144441_winter_wildflower.sql
+•   C:\xampp\htdocs\TVBOX3\backend\migrations\006_create_refresh_tokens_table.sql
+•   C:\xampp\htdocs\TVBOX3\backend\migrations\006_create_refresh_tokens_table_simple.sql

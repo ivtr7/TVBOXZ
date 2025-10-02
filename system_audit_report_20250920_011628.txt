@@ -1,0 +1,72 @@
+================================================================================
+RELATÓRIO DE AUDITORIA DO SISTEMA - TVBOX3
+================================================================================
+Data/Hora: 20/09/2025 01:16:28
+Projeto: C:\xampp\htdocs\TVBOX3
+
+RESUMO EXECUTIVO
+----------------------------------------
+Total de sucessos: 12
+Total de erros: 15
+Total de avisos: 0
+
+STATUS DOS SERVIÇOS
+----------------------------------------
+frontend: DOWN
+backend: DOWN
+api: DOWN
+
+TESTES DE LOGIN
+----------------------------------------
+login_admin: Login admin válido - Status: ERROR
+login_user: Login usuário válido - Status: ERROR
+login_invalid: Login inválido - Status: ERROR
+login_empty: Login vazio - Status: ERROR
+
+TESTES DE API
+----------------------------------------
+GET__api_devices: Listar dispositivos - Status: ERROR
+GET__api_announcements: Listar anúncios - Status: ERROR
+POST__api_auth_login: Login de usuário - Status: ERROR
+GET__api_system_status: Status do sistema - Status: ERROR
+
+TESTES DE BANCO DE DADOS
+----------------------------------------
+database_file: MISSING
+
+ERROS ENCONTRADOS
+----------------------------------------
+1. Serviço frontend não está acessível: HTTPConnectionPool(host='localhost', port=5173): Max retries exceeded with url: / (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF7EB8C0>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))
+2. Serviço backend não está acessível: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: / (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF8DC910>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))
+3. Serviço api não está acessível: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF8DD1D0>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))
+4. Arquivo de banco de dados não encontrado
+5. API Listar dispositivos não acessível: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/devices (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF8E0E90>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))
+6. API Listar anúncios não acessível: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/announcements (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF8E15B0>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))
+7. API Login de usuário não acessível: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/auth/login (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF8D1490>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))
+8. API Status do sistema não acessível: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/system/status (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF86F790>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))
+9. Login test Login admin válido falhou: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/auth/login (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF918050>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))
+10. Login test Login usuário válido falhou: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/auth/login (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF918380>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))
+11. Login test Login inválido falhou: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/auth/login (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF9186B0>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))
+12. Login test Login vazio falhou: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/auth/login (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF86FAC0>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))
+13. Funcionalidade device_management com problemas: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/devices (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF86FDF0>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))
+14. Funcionalidade announcements com problemas: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/announcements (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF86F460>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))
+15. Funcionalidade websocket com problemas: WebSocket port not accessible
+
+AVISOS
+----------------------------------------
+Nenhum aviso!
+
+TESTES BEM-SUCEDIDOS
+----------------------------------------
+✓ Arquivo encontrado: package.json
+✓ Arquivo encontrado: vite.config.ts
+✓ Arquivo encontrado: backend/package.json
+✓ Arquivo encontrado: backend/server.js
+✓ Arquivo encontrado: .env
+✓ Arquivo encontrado: backend/.env
+✓ Funcionalidade file_upload está funcionando
+✓ Diretório backend/uploads existe com 9 arquivos
+✓ Diretório backend/config existe com 1 arquivos
+✓ Diretório backend/routes existe com 7 arquivos
+✓ Diretório src/components existe com 6 arquivos
+✓ Diretório src/services existe com 2 arquivos

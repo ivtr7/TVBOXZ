@@ -1,0 +1,127 @@
+{
+  "timestamp": "2025-09-20T01:15:33.340013",
+  "system_status": {
+    "file_structure": {
+      "package.json": "OK",
+      "vite.config.ts": "OK",
+      "backend/package.json": "OK",
+      "backend/server.js": "OK",
+      ".env": "OK",
+      "backend/.env": "OK"
+    },
+    "features": {
+      "device_management": {
+        "status": "ERROR",
+        "error": "HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/devices (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF86FDF0>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))"
+      },
+      "file_upload": {
+        "status": "OK",
+        "upload_dir_exists": true
+      },
+      "announcements": {
+        "status": "ERROR",
+        "error": "HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/announcements (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF86F460>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))"
+      },
+      "websocket": {
+        "status": "ERROR",
+        "error": "WebSocket port not accessible"
+      }
+    }
+  },
+  "login_tests": {
+    "login_admin": {
+      "status_code": "ERROR",
+      "description": "Login admin válido",
+      "error": "HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/auth/login (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF918050>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))"
+    },
+    "login_user": {
+      "status_code": "ERROR",
+      "description": "Login usuário válido",
+      "error": "HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/auth/login (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF918380>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))"
+    },
+    "login_invalid": {
+      "status_code": "ERROR",
+      "description": "Login inválido",
+      "error": "HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/auth/login (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF9186B0>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))"
+    },
+    "login_empty": {
+      "status_code": "ERROR",
+      "description": "Login vazio",
+      "error": "HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/auth/login (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF86FAC0>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))"
+    }
+  },
+  "api_tests": {
+    "GET__api_devices": {
+      "status_code": "ERROR",
+      "description": "Listar dispositivos",
+      "error": "HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/devices (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF8E0E90>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))"
+    },
+    "GET__api_announcements": {
+      "status_code": "ERROR",
+      "description": "Listar anúncios",
+      "error": "HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/announcements (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF8E15B0>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))"
+    },
+    "POST__api_auth_login": {
+      "status_code": "ERROR",
+      "description": "Login de usuário",
+      "error": "HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/auth/login (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF8D1490>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))"
+    },
+    "GET__api_system_status": {
+      "status_code": "ERROR",
+      "description": "Status do sistema",
+      "error": "HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/system/status (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF86F790>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))"
+    }
+  },
+  "database_tests": {
+    "database_file": "MISSING"
+  },
+  "file_system_tests": {
+    "dir_backend/uploads": "EXISTS",
+    "dir_backend/uploads_files": 9,
+    "dir_backend/config": "EXISTS",
+    "dir_backend/config_files": 1,
+    "dir_backend/routes": "EXISTS",
+    "dir_backend/routes_files": 7,
+    "dir_src/components": "EXISTS",
+    "dir_src/components_files": 6,
+    "dir_src/services": "EXISTS",
+    "dir_src/services_files": 2
+  },
+  "service_tests": {
+    "frontend": "DOWN",
+    "backend": "DOWN",
+    "api": "DOWN"
+  },
+  "errors": [
+    "Serviço frontend não está acessível: HTTPConnectionPool(host='localhost', port=5173): Max retries exceeded with url: / (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF7EB8C0>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))",
+    "Serviço backend não está acessível: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: / (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF8DC910>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))",
+    "Serviço api não está acessível: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF8DD1D0>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))",
+    "Arquivo de banco de dados não encontrado",
+    "API Listar dispositivos não acessível: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/devices (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF8E0E90>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))",
+    "API Listar anúncios não acessível: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/announcements (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF8E15B0>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))",
+    "API Login de usuário não acessível: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/auth/login (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF8D1490>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))",
+    "API Status do sistema não acessível: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/system/status (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF86F790>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))",
+    "Login test Login admin válido falhou: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/auth/login (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF918050>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))",
+    "Login test Login usuário válido falhou: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/auth/login (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF918380>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))",
+    "Login test Login inválido falhou: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/auth/login (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF9186B0>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))",
+    "Login test Login vazio falhou: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/auth/login (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF86FAC0>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))",
+    "Funcionalidade device_management com problemas: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/devices (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF86FDF0>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))",
+    "Funcionalidade announcements com problemas: HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /api/announcements (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000126FF86F460>: Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente'))",
+    "Funcionalidade websocket com problemas: WebSocket port not accessible"
+  ],
+  "warnings": [],
+  "success": [
+    "Arquivo encontrado: package.json",
+    "Arquivo encontrado: vite.config.ts",
+    "Arquivo encontrado: backend/package.json",
+    "Arquivo encontrado: backend/server.js",
+    "Arquivo encontrado: .env",
+    "Arquivo encontrado: backend/.env",
+    "Funcionalidade file_upload está funcionando",
+    "Diretório backend/uploads existe com 9 arquivos",
+    "Diretório backend/config existe com 1 arquivos",
+    "Diretório backend/routes existe com 7 arquivos",
+    "Diretório src/components existe com 6 arquivos",
+    "Diretório src/services existe com 2 arquivos"
+  ]
+}

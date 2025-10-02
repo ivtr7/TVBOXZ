@@ -1,0 +1,190 @@
+# TVBOX Control System - Plano de Desenvolvimento Detalhado
+
+## 📋 Análise Atual do Sistema
+
+### ✅ Componentes Funcionais
+- **Backend API**: Servidor Express.js rodando na porta 3001
+- **Frontend React**: Interface Vite rodando na porta 5174
+- **WebSocket**: Comunicação em tempo real configurada
+- **Banco MySQL**: Estrutura de dados implementada
+- **Autenticação JWT**: Sistema de login funcional
+
+### 🔍 Rotas Frontend Auditadas
+- **App.tsx**: Roteamento principal (admin, device, client/:deviceId)
+- **AdminApp.tsx**: Sub-rotas administrativas (dashboard, devices, media, playlists, analytics, campaigns, settings, login)
+- **DeviceApp.tsx**: Interface do dispositivo com onboarding
+- **ClientApp.tsx**: Dashboard do cliente com validação de deviceId
+
+### 🔌 APIs Backend Mapeadas
+- **Auth**: /api/auth (login, register, me, refresh, logout)
+- **Devices**: /api/devices (register, status, info, playlist, events)
+- **Content**: /api/content (CRUD completo + upload de arquivos)
+- **Playlists**: /api/playlists (CRUD completo + duplicação)
+- **Campaigns**: /api/campaigns (CRUD + analytics)
+- **Analytics**: /api/analytics (overview, devices, playback, export)
+- **System**: /api/system (status, logs, audit, settings, maintenance)
+
+## 🚨 Problemas Identificados
+
+### 1. Dados Mockados/Hardcoded
+- **AdminLogin.tsx**: Credenciais de exemplo expostas (admin@oricontrol.com / password)
+- **AdminDashboard.tsx**: Referências ao Supabase (deve usar MySQL)
+- **PlaylistsPage.tsx**: Comentário "Mock data for playlists"
+- **AnalyticsPage.tsx**: Comentário "Mock analytics data"
+- **CampaignsPage.tsx**: Comentário "Mock data for campaigns"
+- **auth.js**: Login hardcoded (admin@oricontrol.com / admin123)
+
+### 2. Inconsistências de Dados
+- **AuthContext**: Interface User com campos diferentes do backend
+- **AdminDashboard**: Queries do Supabase em sistema MySQL
+- **Credenciais**: Diferença entre frontend (password) e backend (admin123)
+
+## 🎯 Plano de Ação Prioritário
+
+### FASE 1: Correção de Dados Mockados (ALTA PRIORIDADE)
+
+#### 1.1 Remover Credenciais Hardcoded
+- [ ] **AdminLogin.tsx**: Remover texto "Use as credenciais: admin@oricontrol.com / password"
+- [ ] **auth.js**: Implementar validação real no banco de dados
+- [ ] **Criar tabela users**: Estrutura para usuários administrativos
+
+#### 1.2 Corrigir Interface de Usuário
+- [ ] **AuthContext.tsx**: Alinhar interface User com resposta da API
+- [ ] **Campos**: id, email, name, role, tenant_id, created_at
+
+#### 1.3 Substituir Dados Mock por APIs Reais
+- [ ] **AdminDashboard.tsx**: Remover queries Supabase, implementar chamadas para /api/analytics
+- [ ] **PlaylistsPage.tsx**: Conectar com /api/playlists
+- [ ] **AnalyticsPage.tsx**: Conectar com /api/analytics
+- [ ] **CampaignsPage.tsx**: Conectar com /api/campaigns
+
+### FASE 2: Melhorias de UX/UI (MÉDIA PRIORIDADE)
+
+#### 2.1 Validações e Feedback
+- [ ] **Formulários**: Validação client-side em todos os forms
+- [ ] **Loading States**: Spinners e skeletons em todas as páginas
+- [ ] **Error Handling**: Tratamento de erros padronizado
+- [ ] **Toast Notifications**: Feedback consistente para ações
+
+#### 2.2 Responsividade
+- [ ] **Mobile**: Otimizar interface para dispositivos móveis
+- [ ] **Tablet**: Ajustar layouts para tablets
+- [ ] **Desktop**: Melhorar aproveitamento de tela grande
+
+### FASE 3: Funcionalidades Avançadas (BAIXA PRIORIDADE)
+
+#### 3.1 Analytics Avançados
+- [ ] **Dashboards**: Gráficos interativos com drill-down
+- [ ] **Relatórios**: Exportação em PDF/Excel
+- [ ] **Alertas**: Notificações automáticas para eventos
+
+#### 3.2 Gestão de Conteúdo
+- [ ] **Preview**: Visualização de mídia antes da publicação
+- [ ] **Agendamento**: Programação de conteúdo por horário
+- [ ] **Templates**: Modelos pré-definidos de playlists
+
+#### 3.3 Segurança
+- [ ] **2FA**: Autenticação de dois fatores
+- [ ] **Audit Log**: Log detalhado de ações administrativas
+- [ ] **Permissões**: Sistema granular de permissões
+
+## 🛠️ Implementação Técnica
+
+### Estrutura do Banco de Dados
+```sql
+-- Tabela de usuários administrativos
+CREATE TABLE users (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  role ENUM('admin', 'super_admin') DEFAULT 'admin',
+  tenant_id INT DEFAULT 1,
+  active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Inserir usuário admin padrão
+INSERT INTO users (email, password_hash, name, role) 
+VALUES ('admin@oricontrol.com', '$2a$10$...', 'Administrador', 'admin');
+```
+
+### APIs a Implementar
+- **GET /api/analytics/dashboard**: Dados consolidados do dashboard
+- **GET /api/devices/summary**: Resumo de dispositivos ativos/inativos
+- **GET /api/content/stats**: Estatísticas de conteúdo
+- **GET /api/campaigns/performance**: Performance das campanhas
+
+### Componentes a Criar
+- **DashboardCard**: Componente reutilizável para cards de estatísticas
+- **DataTable**: Tabela com paginação, filtros e ordenação
+- **MediaPreview**: Preview de arquivos de mídia
+- **ChartContainer**: Container padronizado para gráficos
+
+## 📊 Métricas de Sucesso
+
+### Técnicas
+- [ ] 0 dados mockados no código
+- [ ] 100% das páginas conectadas às APIs reais
+- [ ] Tempo de carregamento < 2s para todas as páginas
+- [ ] 0 erros de console no navegador
+
+### Funcionais
+- [ ] Login funcional com usuários reais do banco
+- [ ] Dashboard com dados reais e atualizados
+- [ ] Gestão completa de dispositivos, conteúdo e campanhas
+- [ ] WebSocket funcionando para atualizações em tempo real
+
+### UX
+- [ ] Interface responsiva em todos os dispositivos
+- [ ] Feedback visual para todas as ações do usuário
+- [ ] Navegação intuitiva e consistente
+- [ ] Carregamento progressivo de dados
+
+## 🚀 Cronograma Sugerido
+
+### Semana 1: Correções Críticas
+- Remover dados mockados
+- Implementar autenticação real
+- Corrigir interfaces de dados
+
+### Semana 2: Conexão com APIs
+- Conectar todas as páginas às APIs reais
+- Implementar loading states
+- Adicionar tratamento de erros
+
+### Semana 3: Melhorias de UX
+- Otimizar responsividade
+- Melhorar feedback visual
+- Testes de usabilidade
+
+### Semana 4: Funcionalidades Avançadas
+- Analytics avançados
+- Recursos de gestão de conteúdo
+- Otimizações de performance
+
+## 📝 Notas de Desenvolvimento
+
+### Padrões de Código
+- **TypeScript**: Tipagem estrita em todos os componentes
+- **React Query**: Cache e sincronização de dados
+- **Tailwind CSS**: Estilização consistente
+- **ESLint/Prettier**: Formatação automática
+
+### Testes
+- **Unit Tests**: Jest + React Testing Library
+- **Integration Tests**: Cypress para fluxos críticos
+- **API Tests**: Postman/Newman para endpoints
+
+### Deploy
+- **Frontend**: Vercel ou Netlify
+- **Backend**: Railway ou Heroku
+- **Database**: PlanetScale ou AWS RDS
+- **Storage**: AWS S3 para arquivos de mídia
+
+---
+
+**Última atualização**: Janeiro 2025
+**Versão**: 1.0
+**Status**: Em desenvolvimento ativo

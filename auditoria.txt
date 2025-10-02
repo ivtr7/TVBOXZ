@@ -1,0 +1,175 @@
+# AUDITORIA COMPLETA DO SISTEMA TVBOX3
+# Data: $(Get-Date)
+# Status: SISTEMA PARCIALMENTE FUNCIONAL - NECESSITA CORREÇÕES CRÍTICAS
+
+## 🚨 PROBLEMAS CRÍTICOS IDENTIFICADOS
+
+### 1. INCOMPATIBILIDADE DE ESTRUTURA DE DADOS
+**PROBLEMA**: O código backend está usando estruturas de tabelas que não existem no banco de dados.
+
+**DETALHES**:
+- DeviceService.getDeviceManifest() usa query JOIN com tabela 'playlists' que não tem campos device_id, content_id
+- Rota /devices/:deviceId/playlist usa tabela 'media' que NÃO EXISTE no banco
+- Estrutura atual da tabela 'playlists' só tem: id, name, description, active, created_at, updated_at
+- Faltam campos essenciais: device_id, content_id, order_index, duration_seconds
+
+**IMPACTO**: TVBoxes não conseguem receber conteúdo (Error fetching content)
+
+### 2. BANCO DE DADOS VAZIO
+**ESTADO ATUAL**:
+- 16 dispositivos registrados ✅
+- 0 conteúdos cadastrados ❌
+- 0 playlists criadas ❌
+- 0 itens de playlist ❌
+
+### 3. ESTRUTURA DE TABELAS INCOMPLETA
+**TABELAS EXISTENTES**:
+✅ devices (funcional)
+✅ content (estrutura correta)
+✅ users (funcional)
+❌ playlists (estrutura inadequada)
+❌ media (não existe - referenciada no código)
+✅ playlist_items (existe mas vazia)
+✅ playlist_content (existe mas vazia)
+
+## 📋 O QUE FALTA PARA FUNCIONAR COM DADOS REAIS
+
+### 1. CORREÇÃO DA ESTRUTURA DO BANCO
+**AÇÃO NECESSÁRIA**: Alterar tabela 'playlists' para incluir:
+```sql
+ALTER TABLE playlists ADD COLUMN device_id VARCHAR(255);
+ALTER TABLE playlists ADD COLUMN content_id INT(11);
+ALTER TABLE playlists ADD COLUMN order_index INT(11) DEFAULT 0;
+ALTER TABLE playlists ADD COLUMN duration_seconds INT(11);
+ALTER TABLE playlists ADD COLUMN tenant_id VARCHAR(255) DEFAULT 'default';
+```
+
+**OU** Criar nova tabela device_playlists:
+```sql
+CREATE TABLE device_playlists (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  device_id VARCHAR(255) NOT NULL,
+  content_id INT NOT NULL,
+  order_index INT DEFAULT 0,
+  duration_seconds INT,
+  tenant_id VARCHAR(255) DEFAULT 'default',
+  active TINYINT(1) DEFAULT 1,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (device_id) REFERENCES devices(device_id),
+  FOREIGN KEY (content_id) REFERENCES content(id)
+);
+```
+
+### 2. CORREÇÃO DO CÓDIGO BACKEND
+**DeviceService.getDeviceManifest()** - Linha 75-95:
+- Corrigir query para usar estrutura real das tabelas
+- Remover referência à tabela 'media' inexistente
+- Usar 'device_playlists' ou 'playlist_items' corretamente
+
+**routes/devices.js** - Linha 293-340:
+- Corrigir query que usa tabela 'media'
+- Implementar lógica correta para buscar conteúdo do dispositivo
+
+### 3. SISTEMA DE UPLOAD E GESTÃO DE CONTEÚDO
+**FUNCIONALIDADES NECESSÁRIAS**:
+✅ Upload de arquivos (implementado em content.js)
+❌ Interface admin para upload (precisa ser testada)
+❌ Associação de conteúdo a dispositivos
+❌ Criação de playlists por dispositivo
+❌ Ordenação de conteúdo nas playlists
+
+### 4. DADOS DE TESTE REAIS
+**NECESSÁRIO CRIAR**:
+- Conteúdos de exemplo (vídeos/imagens)
+- Playlists associadas aos dispositivos existentes
+- Estrutura de pastas para uploads (/uploads/tenant_*)
+
+### 5. CORREÇÕES NO FRONTEND
+**TVBoxDisplay.tsx** - Linha 87:
+- Endpoint correto: `/api/devices/${deviceId}/playlist` (não `/tvbox/playlist/${deviceId}`)
+- Tratamento de erro quando não há conteúdo
+- Fallback para conteúdo padrão
+
+## 🔧 PLANO DE CORREÇÃO PRIORITÁRIO
+
+### FASE 1: CORREÇÃO CRÍTICA (URGENTE)
+1. ✅ Corrigir geração de UUID no frontend (JÁ FEITO)
+2. ✅ Corrigir campo device_uuid no backend (JÁ FEITO)
+3. ❌ Corrigir estrutura da tabela playlists
+4. ❌ Corrigir queries no DeviceService
+5. ❌ Corrigir rota de playlist em devices.js
+
+### FASE 2: IMPLEMENTAÇÃO DE CONTEÚDO
+1. ❌ Criar conteúdos de teste
+2. ❌ Implementar associação dispositivo-conteúdo
+3. ❌ Testar upload via interface admin
+4. ❌ Criar playlists padrão para dispositivos
+
+### FASE 3: TESTES E VALIDAÇÃO
+1. ❌ Testar TVBox real recebendo conteúdo
+2. ❌ Validar WebSocket para atualizações
+3. ❌ Testar mudanças de playlist em tempo real
+4. ❌ Validar analytics e logs
+
+## 📊 ANÁLISE DE FUNCIONALIDADES
+
+### ✅ FUNCIONANDO
+- Registro de dispositivos
+- Autenticação JWT
+- WebSocket (estrutura)
+- Interface admin (parcial)
+- Sistema de tenants
+- Middleware de segurança
+
+### ❌ NÃO FUNCIONANDO
+- Entrega de conteúdo aos TVBoxes
+- Criação de playlists
+- Upload de conteúdo (não testado)
+- Analytics reais
+- Logs de reprodução
+
+### ⚠️ PARCIALMENTE FUNCIONANDO
+- Dashboard admin (dados mockados)
+- Sistema de campanhas (estrutura existe)
+- Gestão de usuários (básico)
+
+## 🎯 PRÓXIMOS PASSOS RECOMENDADOS
+
+1. **IMEDIATO**: Corrigir estrutura do banco de dados
+2. **URGENTE**: Corrigir queries no backend
+3. **IMPORTANTE**: Criar conteúdo de teste
+4. **NECESSÁRIO**: Testar com TVBox real
+5. **DESEJÁVEL**: Implementar analytics reais
+
+## 📝 OBSERVAÇÕES TÉCNICAS
+
+### Arquitetura Atual
+- **Frontend**: React + Vite (porta 5174) ✅
+- **Backend**: Express.js (porta 3001) ✅
+- **Banco**: MySQL (XAMPP) ✅
+- **WebSocket**: Implementado ✅
+- **Uploads**: Estrutura pronta ✅
+
+### Segurança
+- JWT implementado ✅
+- Rate limiting ✅
+- Brute force protection ✅
+- Validação Joi ✅
+- Sanitização de arquivos ✅
+
+### Performance
+- Cache de vídeo implementado ✅
+- Qualidade adaptativa ✅
+- Compressão de arquivos ❌
+- CDN ❌
+
+## 🚀 CONCLUSÃO
+
+O sistema TVBOX3 tem uma **arquitetura sólida e bem estruturada**, mas possui **incompatibilidades críticas** entre o código e a estrutura do banco de dados que impedem o funcionamento com dados reais.
+
+**PRIORIDADE MÁXIMA**: Corrigir a estrutura de dados e as queries para que os TVBoxes possam receber conteúdo.
+
+**TEMPO ESTIMADO PARA CORREÇÃO**: 2-4 horas para correções críticas + 1-2 dias para testes completos.
+
+**STATUS FINAL**: Sistema 70% funcional - Necessita correções urgentes na camada de dados.

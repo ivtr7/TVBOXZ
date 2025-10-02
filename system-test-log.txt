@@ -1,0 +1,36 @@
+[2025-09-16T17:43:43.302Z] [INFO] === INICIANDO TESTE DE AUTENTICAÇÃO ===
+[2025-09-16T17:43:43.395Z] [SUCCESS] ✓ Login de administrador Token: eyJhbGciOiJIUzI1NiIs...
+[2025-09-16T17:43:45.403Z] [SUCCESS] ✓ Rejeição de credenciais inválidas 
+[2025-09-16T17:43:46.415Z] [INFO] === INICIANDO TESTE DE GERENCIAMENTO DE DISPOSITIVOS ===
+[2025-09-16T17:43:46.419Z] [SUCCESS] ✓ Listagem de dispositivos 0 dispositivos encontrados
+[2025-09-16T17:43:46.423Z] [SUCCESS] ✓ Registro de dispositivo ID: device_1758044626421_8m2lu3l32
+[2025-09-16T17:43:46.426Z] [SUCCESS] ✓ Consulta de status do dispositivo Status: online
+[2025-09-16T17:43:47.434Z] [INFO] === INICIANDO TESTE DE GERENCIAMENTO DE CONTEÚDO ===
+[2025-09-16T17:43:47.438Z] [SUCCESS] ✓ Listagem de conteúdo 11 itens encontrados
+[2025-09-16T17:43:47.438Z] [INFO] Usando conteúdo existente ID: 11
+[2025-09-16T17:43:47.446Z] [SUCCESS] ✓ Upload de conteúdo ID: 12
+[2025-09-16T17:43:48.468Z] [INFO] === INICIANDO TESTE DE GERENCIAMENTO DE PLAYLISTS ===
+[2025-09-16T17:43:48.472Z] [SUCCESS] ✓ Consulta de playlist 12 itens na playlist
+[2025-09-16T17:43:48.479Z] [SUCCESS] ✓ Adição de conteúdo à playlist 
+[2025-09-16T17:43:48.485Z] [WARN] Reordenação falhou (esperado se playlist vazia)
+[2025-09-16T17:43:49.498Z] [INFO] === INICIANDO TESTE DE WEBSOCKET ===
+[2025-09-16T17:43:49.560Z] [SUCCESS] ✓ Conexão WebSocket 
+[2025-09-16T17:43:50.576Z] [INFO] === INICIANDO TESTE DE ENDPOINTS PÚBLICOS ===
+[2025-09-16T17:43:50.579Z] [WARN] Endpoint de health check não encontrado (opcional)
+[2025-09-16T17:43:50.581Z] [SUCCESS] ✓ Playlist pública do dispositivo 
+[2025-09-16T17:43:51.583Z] [INFO] === INICIANDO TESTE DE SEGURANÇA ===
+[2025-09-16T17:43:51.586Z] [SUCCESS] ✓ Proteção de rota sem token 
+[2025-09-16T17:43:51.588Z] [SUCCESS] ✓ Rejeição de token inválido 
+[2025-09-16T17:43:51.588Z] [INFO] ============================================================
+[2025-09-16T17:43:51.589Z] [INFO] 📊 RELATÓRIO FINAL DO TESTE
+[2025-09-16T17:43:51.589Z] [INFO] ============================================================
+[2025-09-16T17:43:51.589Z] [INFO] ⏱️  Duração total: 8.287s
+[2025-09-16T17:43:51.590Z] [INFO] ✅ Testes aprovados: 13
+[2025-09-16T17:43:51.590Z] [INFO] ❌ Testes falharam: 0
+[2025-09-16T17:43:51.590Z] [INFO] 🔧 Correções aplicadas: 0
+[2025-09-16T17:43:51.591Z] [INFO] 
+📈 Taxa de sucesso: 100.00%
+[2025-09-16T17:43:51.591Z] [INFO] 🎉 SISTEMA EM EXCELENTE ESTADO!
+[2025-09-16T17:43:51.592Z] [INFO] 
+📄 Log completo salvo em: system-test-log.txt
+[2025-09-16T17:43:51.592Z] [INFO] ============================================================

@@ -1,0 +1,244 @@
+# ANÁLISE E FLUXOGRAMA DO SISTEMA TVBOX3
+
+## FLUXOGRAMA DO SISTEMA
+
+```
++---------------------------+     +---------------------------+     +---------------------------+
+|                           |     |                           |     |                           |
+|  CONFIGURAÇÃO INICIAL     |     |  GERENCIAMENTO            |     |  EXIBIÇÃO                 |
+|  (SETUP)                  |     |  (ADMIN)                  |     |  (DISPLAY)                |
+|                           |     |                           |     |                           |
++---------------------------+     +---------------------------+     +---------------------------+
+| 1. Acesso à tela de setup |     | 1. Listagem de devices    |     | 1. Carrega deviceId      |
+| 2. Geração de UUID        |     | 2. Status real via WS     |     | 2. Busca token no storage|
+| 3. Envio para backend     |     | 3. Upload de arquivos     |     | 3. Solicita manifesto    |
+| 4. Recebe ID e token      |     | 4. Reordenação (drag/drop)|     | 4. Reproduz conteúdo     |
+| 5. Salva no localStorage  |     | 5. Comandos remotos       |     | 5. Monitora atualizações |
++---------------------------+     +---------------------------+     +---------------------------+
+           |                                  |                                 |
+           v                                  v                                 v
++---------------------------+     +---------------------------+     +---------------------------+
+|                           |     |                           |     |                           |
+|  BACKEND - REGISTRO       |     |  BACKEND - ADMIN          |     |  BACKEND - PLAYER        |
+|                           |     |                           |     |                           |
++---------------------------+     +---------------------------+     +---------------------------+
+| 1. Valida dados           |     | 1. Autenticação           |     | 1. Valida token          |
+| 2. Cria/atualiza device   |     | 2. CRUD de devices        |     | 2. Monta manifesto       |
+| 3. Gera token JWT         |     | 3. Gestão de arquivos     |     | 3. Entrega conteúdo      |
+| 4. Retorna dados          |     | 4. Monitoramento          |     | 4. Notifica mudanças     |
++---------------------------+     +---------------------------+     +---------------------------+
+           |                                  |                                 |
+           |                                  |                                 |
+           v                                  v                                 v
++---------------------------+     +---------------------------+     +---------------------------+
+|                           |     |                           |     |                           |
+|  WEBSOCKET                |     |  BANCO DE DADOS           |     |  SISTEMA DE ARQUIVOS     |
+|                           |     |                           |     |                           |
++---------------------------+     +---------------------------+     +---------------------------+
+| 1. Conexão de devices     |     | 1. Tabela devices         |     | 1. Uploads por device    |
+| 2. Conexão de admins      |     | 2. Tabela device_files    |     | 2. Estrutura organizada  |
+| 3. Status em tempo real   |     | 3. Tabela announcements   |     | 3. Acesso via URL        |
+| 4. Comandos remotos       |     | 4. Tabela device_logs     |     | 4. Controle de acesso    |
++---------------------------+     +---------------------------+     +---------------------------+
+```
+
+## EXPLICAÇÃO DO FUNCIONAMENTO DO SISTEMA
+
+### 1. FLUXO DE CONFIGURAÇÃO (SETUP)
+
+O processo de configuração de um dispositivo TVBOX segue estas etapas:
+
+1. **Acesso à tela de setup**: O usuário acessa a URL `/tvbox/setup` no navegador do dispositivo.
+2. **Informações do dispositivo**: O usuário fornece um nome para o dispositivo.
+3. **Geração de identificador único**: O sistema gera um UUID v4 para identificar o dispositivo.
+4. **Registro no backend**: O frontend envia uma requisição POST para `/api/devices/register` com:
+   - device_uuid: UUID gerado
+   - name: Nome fornecido pelo usuário
+   - model: Informações do dispositivo/navegador
+   - tenant_id: ID do tenant (geralmente 1 para o padrão)
+5. **Processamento no backend**:
+   - O backend valida os dados recebidos
+   - Verifica se o dispositivo já existe (pelo UUID)
+   - Se existir, atualiza informações como nome e last_seen
+   - Se não existir, cria um novo registro no banco
+   - Gera um token JWT para autenticação do dispositivo
+6. **Resposta do backend**:
+   - Retorna o ID numérico do dispositivo (device.id)
+   - Retorna o UUID do dispositivo (device.device_id)
+   - Retorna o token JWT gerado
+   - Indica se é um dispositivo novo ou existente
+7. **Armazenamento local**:
+   - O frontend salva no localStorage:
+     - tvbox_device_id: ID numérico do dispositivo
+     - device_id: ID numérico do dispositivo
+     - device_uuid: UUID do dispositivo
+     - device_token: Token JWT para autenticação
+     - tvbox_device_name: Nome do dispositivo
+8. **Redirecionamento**: O usuário é redirecionado para a tela de exibição (`/tvbox/display`).
+
+### 2. FLUXO DE EXIBIÇÃO (DISPLAY)
+
+O processo de exibição de conteúdo segue estas etapas:
+
+1. **Inicialização**:
+   - O componente TVBoxDisplay é carregado na rota `/tvbox/display`
+   - Verifica se há um deviceId na URL (query param) ou no localStorage
+   - Recupera o token do dispositivo do localStorage
+2. **Conexão WebSocket**:
+   - Estabelece conexão WebSocket com o backend
+   - Envia identificação do dispositivo
+   - Começa a enviar heartbeats periódicos para manter status online
+3. **Obtenção do manifesto**:
+   - Faz uma requisição GET para `/api/player/:deviceId/manifest`
+   - Inclui o token JWT no cabeçalho Authorization
+   - O backend valida o token e verifica se corresponde ao deviceId
+4. **Processamento do manifesto**:
+   - O backend monta o manifesto combinando:
+     - Arquivos do dispositivo (imagens/vídeos)
+     - Anúncios ativos para o dispositivo
+   - Ordena os itens conforme a configuração
+   - Retorna o manifesto completo
+5. **Reprodução de conteúdo**:
+   - O MediaPlayer recebe o manifesto
+   - Faz cache dos arquivos quando possível
+   - Inicia a reprodução sequencial dos itens
+   - Respeita o tempo de exibição configurado para imagens
+6. **Monitoramento de atualizações**:
+   - Escuta eventos WebSocket para atualizações de conteúdo
+   - Quando notificado, recarrega o manifesto
+   - Atualiza a playlist sem interromper a reprodução atual
+
+### 3. FLUXO DE ADMINISTRAÇÃO
+
+O processo de administração dos dispositivos segue estas etapas:
+
+1. **Autenticação**:
+   - Administrador acessa o painel com credenciais
+   - Sistema valida e gera token JWT de admin
+   - Token é armazenado para requisições subsequentes
+2. **Listagem de dispositivos**:
+   - Frontend faz requisição GET para `/api/devices`
+   - Backend retorna lista de dispositivos do tenant
+   - Informações incluem ID, nome, localização, status, última atividade
+3. **Monitoramento em tempo real**:
+   - Frontend estabelece conexão WebSocket com namespace `/admin`
+   - Recebe atualizações de status dos dispositivos
+   - Atualiza a interface quando dispositivos conectam/desconectam
+4. **Gerenciamento de arquivos**:
+   - Para cada dispositivo, permite:
+     - Upload de arquivos (imagens/vídeos)
+     - Listagem dos arquivos existentes
+     - Reordenação via drag-and-drop
+     - Remoção de arquivos
+5. **Controle remoto**:
+   - Envio de comandos para dispositivos via WebSocket
+   - Forçar atualização da playlist
+   - Visualizar o player do dispositivo
+
+### 4. SISTEMA DE WEBSOCKET
+
+O sistema de WebSocket gerencia comunicações em tempo real:
+
+1. **Conexões de dispositivos**:
+   - Dispositivos conectam ao WebSocket ao iniciar
+   - Enviam identificação (deviceId)
+   - Enviam heartbeats periódicos
+   - Backend atualiza status para "online"
+2. **Conexões de administradores**:
+   - Admins conectam ao namespace `/admin`
+   - Recebem lista de dispositivos conectados
+   - Recebem atualizações de status em tempo real
+3. **Eventos de status**:
+   - Quando um dispositivo conecta:
+     - Status atualizado para "online"
+     - Admins são notificados
+   - Quando um dispositivo desconecta:
+     - Status atualizado para "offline"
+     - Admins são notificados
+   - Quando ocorre um erro:
+     - Status atualizado para "erro"
+     - Admins são notificados
+4. **Comandos remotos**:
+   - Admins podem enviar comandos para dispositivos
+   - Dispositivos recebem e processam comandos
+   - Comandos incluem: play, pause, next, refresh, etc.
+
+### 5. SISTEMA DE ARQUIVOS
+
+O gerenciamento de arquivos funciona da seguinte forma:
+
+1. **Estrutura de armazenamento**:
+   - Arquivos organizados por dispositivo
+   - Diretório: `/uploads/device_{deviceId}/`
+   - Nomes de arquivos incluem timestamp para evitar conflitos
+2. **Upload de arquivos**:
+   - Frontend envia arquivo via FormData para `/api/device-files/:deviceId/upload`
+   - Backend valida tipo e tamanho do arquivo
+   - Arquivo é salvo no sistema de arquivos
+   - Registro é criado na tabela device_files
+3. **Listagem de arquivos**:
+   - Frontend solicita `/api/device-files/:deviceId/files`
+   - Backend retorna lista de arquivos com metadados
+   - Inclui URLs para download/visualização
+4. **Reordenação**:
+   - Frontend envia nova ordem para `/api/device-files/:deviceId/files/reorder`
+   - Backend atualiza campo order_index na tabela
+   - Ordem é respeitada na montagem do manifesto
+
+## RELATÓRIO DE CORREÇÕES
+
+### PROBLEMAS IDENTIFICADOS E CORREÇÕES REALIZADAS
+
+1. **Dados mockados/falsos no frontend**:
+   - ✅ Corrigido: O status dos dispositivos agora é atualizado em tempo real via WebSocket
+   - ✅ Implementado: O hook useAdminWebSocket atualiza o cache do React Query quando recebe eventos
+
+2. **Centralização de funções nos cards de dispositivos**:
+   - ✅ Corrigido: O componente DeviceCardNew agora contém todas as funções de gerenciamento
+   - ✅ Implementado: Upload, listagem, reordenação e remoção de arquivos dentro do card
+
+3. **Reformulação dos cards e gestão de arquivos**:
+   - ✅ Corrigido: Interface do card redesenhada para melhor usabilidade
+   - ✅ Implementado: Modal com mais opções e visualização completa dos arquivos
+
+4. **Lista de arquivos com ordem de reprodução**:
+   - ✅ Corrigido: Implementado drag-and-drop para reordenação
+   - ✅ Implementado: Atualização instantânea após reordenação
+
+5. **Detecção automática de status real**:
+   - ✅ Corrigido: Status atualizado via WebSocket em tempo real
+   - ✅ Implementado: Heartbeats para detectar desconexões
+
+6. **Verificação de rotas e URLs**:
+   - ✅ Corrigido: Todas as rotas seguem padrão consistente
+   - ✅ Corrigido: URLs de download e upload padronizadas
+
+### PENDÊNCIAS E LIMITAÇÕES
+
+1. **Detecção de reprodução ativa**:
+   - ⚠️ Pendente: O sistema detecta se o dispositivo está conectado, mas não se está efetivamente reproduzindo conteúdo
+   - Solução proposta: Implementar eventos de playback no MediaPlayer que reportem ao backend
+
+2. **Mensagem quando não há conteúdo**:
+   - ⚠️ Pendente: Não há uma mensagem amigável quando a playlist está vazia
+   - Solução proposta: Adicionar uma tela de fallback no MediaPlayer
+
+3. **Integração com WebSocket para força de atualização**:
+   - ⚠️ Pendente: O botão "Forçar atualização" não envia comando via WebSocket
+   - Solução proposta: Integrar com o sistema de WebSocket existente
+
+4. **Visualização prévia de conteúdo**:
+   - ⚠️ Pendente: Não há preview dos arquivos no painel admin
+   - Solução proposta: Adicionar miniaturas e preview no modal de arquivos
+
+## CONCLUSÃO
+
+O sistema TVBOX3 possui uma arquitetura robusta para gerenciamento e exibição de conteúdo em dispositivos remotos. As correções implementadas melhoraram significativamente a experiência do usuário e a confiabilidade dos dados exibidos.
+
+A estrutura atual permite:
+- Registro simplificado de dispositivos
+- Monitoramento em tempo real do status
+- Gerenciamento centralizado de conteúdo
+- Reprodução confiável com atualizações dinâmicas
+
+As pendências identificadas não comprometem o funcionamento principal do sistema, mas representam oportunidades de melhoria para futuras atualizações.

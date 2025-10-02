@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <defs>
+    <style>
+      .box{fill:#ffffff;stroke:#1f2937;stroke-width:2;rx:10;ry:10}
+      .title{font:700 18px Arial, Helvetica, sans-serif; fill:#111827}
+      .text{font:400 14px Arial, Helvetica, sans-serif; fill:#111827}
+      .small{font:400 12px Arial, Helvetica, sans-serif; fill:#374151}
+      .lane{fill:#f3f4f6;stroke:#d1d5db;stroke-width:1}
+      .arrow{stroke:#111827;stroke-width:2;fill:none;marker-end:url(#arrow)}
+      .arrowThin{stroke:#6b7280;stroke-width:1.5;fill:none;marker-end:url(#arrowThin)}
+      .label{font:400 12px Arial, Helvetica, sans-serif; fill:#111827}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#111827"/>
+    </marker>
+    <marker id="arrowThin" markerWidth="8" markerHeight="8" refX="7" refY="2.5" orient="auto">
+      <path d="M0,0 L7,2.5 L0,5 Z" fill="#6b7280"/>
+    </marker>
+  </defs>
+
+  <!-- Lanes -->
+  <rect x="20" y="20" width="1160" height="260" class="lane"/>
+  <text x="30" y="45" class="title">Frontend (Aplicativo da TV)</text>
+
+  <rect x="20" y="300" width="1160" height="280" class="lane"/>
+  <text x="30" y="325" class="title">Backend (Servidor)</text>
+
+  <rect x="20" y="600" width="1160" height="280" class="lane"/>
+  <text x="30" y="625" class="title">Conteúdo e Atualizações</text>
+
+  <!-- Frontend boxes -->
+  <rect x="60" y="70" width="260" height="80" class="box"/>
+  <text x="75" y="95" class="title">Tela de Configuração</text>
+  <text x="75" y="120" class="text">Você informa o nome do aparelho</text>
+
+  <rect x="360" y="70" width="280" height="80" class="box"/>
+  <text x="375" y="95" class="title">Salvar dados do aparelho</text>
+  <text x="375" y="120" class="text">ID numérico, código único e autorização</text>
+
+  <rect x="680" y="70" width="260" height="80" class="box"/>
+  <text x="695" y="95" class="title">Ir para a Tela de Exibição</text>
+  <text x="695" y="120" class="text">A TV abre o player do aparelho</text>
+
+  <rect x="960" y="70" width="180" height="80" class="box"/>
+  <text x="975" y="105" class="title">Player</text>
+  <text x="975" y="130" class="small">Mostra os vídeos e imagens</text>
+
+  <!-- Backend boxes -->
+  <rect x="80" y="360" width="300" height="90" class="box"/>
+  <text x="95" y="390" class="title">Cadastro do aparelho</text>
+  <text x="95" y="415" class="text">Cria/valida e devolve autorização</text>
+
+  <rect x="420" y="360" width="320" height="90" class="box"/>
+  <text x="435" y="390" class="title">Montar programação</text>
+  <text x="435" y="415" class="text">Junta conteúdos e anúncios do aparelho</text>
+
+  <rect x="780" y="360" width="300" height="90" class="box"/>
+  <text x="795" y="390" class="title">Entregar programação</text>
+  <text x="795" y="415" class="text">Devolve lista a exibir para a TV</text>
+
+  <!-- Content/updates boxes -->
+  <rect x="80" y="660" width="300" height="90" class="box"/>
+  <text x="95" y="690" class="title">Arquivos do aparelho</text>
+  <text x="95" y="715" class="text">Vídeos e imagens salvos para a TV</text>
+
+  <rect x="420" y="660" width="300" height="90" class="box"/>
+  <text x="435" y="690" class="title">Anúncios</text>
+  <text x="435" y="715" class="text">Mensagens que entram na programação</text>
+
+  <rect x="760" y="660" width="320" height="90" class="box"/>
+  <text x="775" y="690" class="title">Atualizações em tempo real</text>
+  <text x="775" y="715" class="text">A TV atualiza quando algo muda</text>
+
+  <!-- Arrows Frontend flow -->
+  <path d="M320,110 L360,110" class="arrow"/>
+  <text x="325" y="100" class="label">concluir cadastro</text>
+
+  <path d="M640,110 L680,110" class="arrow"/>
+  <text x="620" y="100" class="label">dados salvos</text>
+
+  <path d="M940,110 L960,110" class="arrow"/>
+  <text x="905" y="100" class="label">abrir player</text>
+
+  <!-- From Setup to Backend register -->
+  <path d="M190,150 L190,360" class="arrow"/>
+  <text x="110" y="260" class="label">enviar cadastro</text>
+
+  <!-- Backend register back to save data -->
+  <path d="M230,450 L230,220 L360,220 L360,150" class="arrow"/>
+  <text x="250" y="205" class="label">retorna autorização</text>
+
+  <!-- Player asks for program (manifest) -->
+  <path d="M1050,150 L1050,360" class="arrow"/>
+  <text x="960" y="260" class="label">pedir programação</text>
+
+  <!-- Assemble program from content + announcements -->
+  <path d="M580,450 L580,660" class="arrowThin"/>
+  <text x="595" y="565" class="small">buscar anúncios</text>
+
+  <path d="M230,450 L230,660" class="arrowThin"/>
+  <text x="95" y="565" class="small">buscar conteúdos</text>
+
+  <!-- Return program to backend deliver -->
+  <path d="M580,450 L630,450 L630,405 L780,405" class="arrow"/>
+  <text x="635" y="395" class="label">programação pronta</text>
+
+  <!-- Deliver to player -->
+  <path d="M930,405 L960,405 L960,150" class="arrow"/>
+  <text x="900" y="200" class="label">enviar para a TV</text>
+
+  <!-- Real-time updates to player -->
+  <path d="M920,705 L1030,705 L1030,150" class="arrowThin"/>
+  <text x="940" y="680" class="small">avisar mudanças</text>
+</svg>

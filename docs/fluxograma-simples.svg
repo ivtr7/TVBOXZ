@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="900" viewBox="0 0 1000 900">
+  <defs>
+    <style>
+      .box{fill:#ffffff;stroke:#1f2937;stroke-width:2;rx:12;ry:12}
+      .title{font:700 20px Arial, Helvetica, sans-serif; fill:#111827}
+      .text{font:400 16px Arial, Helvetica, sans-serif; fill:#111827}
+      .small{font:400 14px Arial, Helvetica, sans-serif; fill:#374151}
+      .arrow{stroke:#111827;stroke-width:2.5;fill:none;marker-end:url(#arrow)}
+      .label{font:400 14px Arial, Helvetica, sans-serif; fill:#111827}
+    </style>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <text x="40" y="50" class="title">Fluxograma simples (sem termos técnicos)</text>
+
+  <!-- Steps -->
+  <rect x="60" y="90" width="320" height="90" class="box"/>
+  <text x="80" y="125" class="text">Você abre a tela de configuração</text>
+
+  <rect x="60" y="210" width="320" height="90" class="box"/>
+  <text x="80" y="245" class="text">Informa um nome e conclui o cadastro</text>
+
+  <rect x="60" y="330" width="320" height="90" class="box"/>
+  <text x="80" y="365" class="text">O sistema reconhece e autoriza o aparelho</text>
+
+  <rect x="60" y="450" width="320" height="90" class="box"/>
+  <text x="80" y="485" class="text">O aparelho abre a tela de exibição</text>
+
+  <rect x="60" y="570" width="320" height="90" class="box"/>
+  <text x="80" y="605" class="text">A tela busca a programação do dia</text>
+
+  <rect x="60" y="690" width="320" height="90" class="box"/>
+  <text x="80" y="720" class="text">Se houver conteúdo, começa a exibir</text>
+  <text x="80" y="745" class="small">Se não houver, mostra “aguardando conteúdo”</text>
+
+  <rect x="60" y="810" width="320" height="60" class="box"/>
+  <text x="80" y="845" class="text">Atualiza quando algo muda</text>
+
+  <!-- Arrows vertical -->
+  <path d="M220,180 L220,210" class="arrow"/>
+  <path d="M220,300 L220,330" class="arrow"/>
+  <path d="M220,420 L220,450" class="arrow"/>
+  <path d="M220,540 L220,570" class="arrow"/>
+  <path d="M220,660 L220,690" class="arrow"/>
+  <path d="M220,780 L220,810" class="arrow"/>
+
+  <!-- Decision: há conteúdo? -->
+  <rect x="430" y="650" width="480" height="160" class="box"/>
+  <text x="450" y="685" class="title">Enquanto exibe</text>
+  <text x="450" y="715" class="text">- Continua mostrando vídeos e imagens</text>
+  <text x="450" y="745" class="text">- Se chegar atualização, troca a programação</text>
+  <text x="450" y="775" class="text">- Se não, mantém o que já está no ar</text>
+
+</svg>

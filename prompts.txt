@@ -1,0 +1,196 @@
+# PROMPTS PARA REVISÃO GLOBAL DO SOFTWARE TVBOX RPA
+# Sistema de Sinalização Digital - Estratégias de Revisão por Etapas
+
+## ETAPA 1: ANÁLISE DE ARQUITETURA E SEGURANÇA
+
+### Prompt 1.1 - Revisão de Segurança
+"Analise todo o código do sistema TVBox RPA focando em:
+- Implementação de JWT e autenticação
+- Validação de entrada de dados
+- Proteção contra SQL injection
+- Sanitização de uploads de arquivos
+- Configurações de CORS e headers de segurança
+- Armazenamento seguro de tokens e credenciais
+Identifique vulnerabilidades e sugira correções sem quebrar funcionalidades existentes."
+
+### Prompt 1.2 - Arquitetura Escalável
+"Revise a arquitetura do sistema considerando:
+- Padrão de separação frontend/backend
+- Estrutura de pastas e organização de código
+- Implementação de services e middlewares
+- Uso de WebSockets para comunicação real-time
+- Gerenciamento de estado no frontend
+- Padrões de design aplicados
+Sugira melhorias para escalabilidade mantendo compatibilidade."
+
+## ETAPA 2: FUNCIONALIDADES CORE
+
+### Prompt 2.1 - Sistema de Registro de Dispositivos
+"Analise o fluxo completo de registro de dispositivos:
+- Geração e validação de UUIDs únicos
+- Processo de onboarding no frontend
+- APIs de registro no backend
+- Persistência de dados no MySQL
+- Tratamento de erros e casos edge
+- Prevenção de registros duplicados
+Garanta que o fluxo funcione sem afetar dispositivos já registrados."
+
+### Prompt 2.2 - Gerenciamento de Conteúdo
+"Revise o sistema de upload e gerenciamento de mídia:
+- Upload de arquivos (imagens/vídeos)
+- Validação de tipos MIME
+- Processamento de metadados (duração, checksum)
+- Sistema de playlist por dispositivo
+- Drag & drop para reordenação
+- Cache e otimização de entrega
+Mantenha compatibilidade com conteúdo já existente."
+
+### Prompt 2.3 - Player de Mídia
+"Analise o MediaPlayer e reprodução de conteúdo:
+- Suporte a múltiplos formatos (MP4, JPG, PNG)
+- Sistema de cache com IndexedDB
+- Transições suaves entre conteúdos
+- Controle de duração (vídeos reais, imagens em steps de 5s)
+- Fallbacks para conectividade instável
+- Sincronização com playlist atualizada
+Garanta reprodução contínua sem interrupções."
+
+## ETAPA 3: COMUNICAÇÃO REAL-TIME
+
+### Prompt 3.1 - WebSocket Implementation
+"Revise a implementação de WebSockets:
+- Namespaces separados (/admin, /devices)
+- Autenticação via JWT nos sockets
+- Broadcast de mudanças de playlist
+- Heartbeat e reconexão automática
+- Tratamento de desconexões
+- Performance com múltiplos dispositivos
+Mantenha estabilidade da comunicação existente."
+
+### Prompt 3.2 - Sincronização de Dados
+"Analise a sincronização entre admin e dispositivos:
+- Propagação instantânea de mudanças
+- Consistência de dados entre interfaces
+- Resolução de conflitos
+- Cache invalidation strategies
+- Offline/online state handling
+Preserve dados já sincronizados."
+
+## ETAPA 4: INTERFACE E EXPERIÊNCIA
+
+### Prompt 4.1 - Interface Admin
+"Revise o painel administrativo:
+- Usabilidade e navegação intuitiva
+- Responsividade em diferentes telas
+- Feedback visual para ações do usuário
+- Tratamento de estados de loading/erro
+- Acessibilidade (WCAG guidelines)
+- Performance de renderização
+Mantenha funcionalidades atuais enquanto melhora UX."
+
+### Prompt 4.2 - Interface do Dispositivo
+"Analise a interface do dispositivo TVBox:
+- Simplicidade e foco no conteúdo
+- Adaptação a diferentes resoluções
+- Orientação portrait/landscape
+- Indicadores de status discretos
+- Robustez contra falhas de rede
+Preserve configurações de dispositivos ativos."
+
+## ETAPA 5: PERFORMANCE E OTIMIZAÇÃO
+
+### Prompt 5.1 - Performance Backend
+"Otimize o backend Node.js:
+- Queries SQL eficientes
+- Indexação adequada no MySQL
+- Rate limiting e throttling
+- Compressão de responses
+- Memory leaks e garbage collection
+- Monitoring e logging
+Mantenha APIs funcionais durante otimizações."
+
+### Prompt 5.2 - Performance Frontend
+"Otimize o frontend React:
+- Bundle size e code splitting
+- Lazy loading de componentes
+- Memoização e re-renders desnecessários
+- Otimização de imagens e vídeos
+- Service Workers para cache
+- Métricas de Core Web Vitals
+Preserve estado da aplicação durante melhorias."
+
+## ETAPA 6: TESTES E QUALIDADE
+
+### Prompt 6.1 - Cobertura de Testes
+"Implemente testes abrangentes:
+- Unit tests para funções críticas
+- Integration tests para APIs
+- E2E tests para fluxos principais
+- Testes de performance e carga
+- Testes de segurança automatizados
+- CI/CD pipeline com testes
+Não quebre funcionalidades testadas."
+
+### Prompt 6.2 - Qualidade de Código
+"Revise qualidade e manutenibilidade:
+- ESLint/Prettier configuration
+- TypeScript strict mode
+- Code smells e duplicação
+- Documentação inline
+- Error handling consistente
+- Logging estruturado
+Mantenha compatibilidade com código existente."
+
+## ETAPA 7: DEPLOYMENT E MONITORAMENTO
+
+### Prompt 7.1 - Estratégia de Deploy
+"Analise processo de deployment:
+- Environment configurations
+- Database migrations seguras
+- Zero-downtime deployment
+- Rollback strategies
+- Health checks e readiness probes
+- Backup e recovery procedures
+Garanta continuidade do serviço."
+
+### Prompt 7.2 - Monitoramento e Alertas
+"Implemente monitoramento robusto:
+- Application Performance Monitoring (APM)
+- Error tracking e alertas
+- Métricas de negócio (dispositivos ativos, conteúdo reproduzido)
+- Logs centralizados e searchable
+- Dashboards para stakeholders
+- SLA monitoring
+Preserve dados históricos de monitoramento."
+
+## METODOLOGIA DE APLICAÇÃO
+
+### Regras Gerais:
+1. **Sempre teste em ambiente de desenvolvimento primeiro**
+2. **Faça backup completo antes de mudanças críticas**
+3. **Implemente mudanças incrementalmente**
+4. **Valide cada etapa antes de prosseguir**
+5. **Mantenha documentação atualizada**
+6. **Monitore impacto em produção**
+
+### Ordem de Execução:
+1. Comece pela Etapa 1 (Arquitetura/Segurança) - base sólida
+2. Prossiga para Etapa 2 (Funcionalidades Core) - features críticas
+3. Continue com Etapa 3 (Comunicação) - integrações
+4. Avance para Etapa 4 (Interface) - experiência do usuário
+5. Otimize na Etapa 5 (Performance) - melhorias de velocidade
+6. Fortaleça com Etapa 6 (Testes) - qualidade e confiabilidade
+7. Finalize com Etapa 7 (Deploy/Monitor) - operação e manutenção
+
+### Critérios de Sucesso:
+- ✅ Zero breaking changes em funcionalidades existentes
+- ✅ Melhoria mensurável de performance
+- ✅ Aumento da cobertura de testes
+- ✅ Redução de bugs reportados
+- ✅ Melhor experiência do usuário
+- ✅ Maior estabilidade do sistema
+- ✅ Facilidade de manutenção aumentada
+
+---
+
+**IMPORTANTE**: Cada prompt deve ser executado com foco em não quebrar o que já está funcionando. O sistema TVBox RPA já possui funcionalidades críticas em produção que devem ser preservadas durante todas as melhorias.
